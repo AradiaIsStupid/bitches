@@ -69,3 +69,19 @@ jobs:
           args: bitches-linux-amd64 application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  push_to_cratesio:
+    name: Crates.io
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/cargo@v1
+        with:
+          command: publish
+          args: token ${{ secrets.CARGO_TOKEN }}
+      - name: Rename binary
+        run: mv target/release/bitches bitches-linux-amd64
+      - name: Upload to release
+        uses: JasonEtco/upload-to-release@d648f1babf776de9cad881320bd9e9818fc3b262
+        with:
+          args: bitches-linux-amd64 application/octet-stream
