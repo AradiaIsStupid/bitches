@@ -1,9 +1,19 @@
 ### No Bitches?
 
+#### Install
+
+Just download it from release page
+or Compile it with your self
+
 ```bash
-$ cargo r
+$ cargo install --git https://github.com/AradiaIsStupid/bitches
+```
 
 
+### Demo
+
+```
+$ ./bitches
 ======= NO Bitches ? =======
 ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
 ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇
