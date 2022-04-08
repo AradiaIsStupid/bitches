@@ -16,8 +16,6 @@ description = "no bitches ?"
 license = "MIT"
 categories = ["cli","memes"]
 
-[package]
-# ...
 include = [
     "**/*.rs",
     "Cargo.toml",
