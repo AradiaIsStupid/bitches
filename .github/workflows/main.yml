@@ -1,56 +1,49 @@
+name: Publish
+
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - '*'
 
 jobs:
-  release:
-    name: release ${{ matrix.target }}  (with non-required env)
+  publish:
+    name: Publish for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
+        name: [
+            linux,
+            windows,
+            macos
+        ]
+
         include:
-          - os: macos-latest
-            env:
-                TARGET: x86_64-apple-darwin
-                COMPILER: clang
-                LINKER: clang
+          - name: linux
+            os: ubuntu-latest
+            artifact_name: target/release/bitches
+            asset_name: bitches-linux
+          - name: windows
+            os: windows-latest
+            artifact_name: target/release/bitches.exe
+            asset_name: bitches-windows
+          - name: macos
+            os: macos-latest
+            artifact_name: target/release/bitches
+            asset_name: bitches-macos
 
-          - os: ubuntu-latest
-            env:
-                TARGET: armv7-unknown-linux-musleabihf
-                COMPILER: arm-linux-gnueabihf-gcc-5
-                LINKER: gcc-5-arm-linux-gnueabihf
+    steps:
+    - uses: actions/checkout@v1
 
-          - os: ubuntu-latest
-            env:
-                TARGET: x86_64-unknown-linux-musl
-                COMPILER: gcc
-                LINKER: gcc
-          - target: x86_64-pc-windows-gnu
-            archive: zip
-          - target: x86_64-linux-musl
-            archive: tar.gz
-    steps:
-      - uses: actions/checkout@master
-      - name: Compile and release
-        uses: rust-build/rust-build.action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.bitches }}
-          RUSTTARGET: ${{ matrix.target }}
-          SRC_DIR: "."
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-  release_without_not_required:
-    name: release ${{ matrix.target }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        target: [x86_64-unknown-linux-musl]
-    steps:
-      - uses: actions/checkout@master
-      - name: Compile and release
-        uses: rust-build/rust-build.action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.bitches }}
-          RUSTTARGET: ${{ matrix.target }}
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Upload binaries to release
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.asset_name }}
+        path: ${{ matrix.artifact_name }}
