@@ -15,4 +15,4 @@ repository = "https://github.com/AradiaIsStupid/bitches"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rand = "0.8.5"
+fastrand = "1.7.0"
