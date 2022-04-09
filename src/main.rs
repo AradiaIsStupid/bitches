@@ -1,5 +1,3 @@
-use rand::seq::SliceRandom;
-
 const ART: [&str; 3] = ["
 ======= NO Bitches ? =======
 ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
@@ -58,6 +56,6 @@ const ART: [&str; 3] = ["
 ];
 
 fn main() {
-    let art = ART.choose(&mut rand::thread_rng()).unwrap();
+    let art = ART[fastrand::usize(..ART.len())];
     art.chars().for_each(|c| print!("{}", c));
 }
